@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7Vf-Ok-Lv5">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="idc-H5-uSQ">
+            <objects>
+                <viewController id="7Vf-Ok-Lv5" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5Zb-hB-GlR"/>
+                        <viewControllerLayoutGuide type="bottom" id="sU9-eH-diV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mg0-cj-FCA">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fai-DI-fkg">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="NativeAds" id="892-Nb-oW6">
+                                        <barButtonItem key="leftBarButtonItem" title="Reload" id="h4x-4D-voU">
+                                            <connections>
+                                                <action selector="reloadAdBannersButtonClick:" destination="7Vf-Ok-Lv5" id="Brz-TQ-Jyc"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Load" id="enk-nb-EhR">
+                                            <connections>
+                                                <action selector="loadTableButtonClick:" destination="7Vf-Ok-Lv5" id="ZiQ-UP-k2I"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="4eq-GX-Gy5">
+                                <rect key="frame" x="0.0" y="64" width="600" height="483"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rqq-QV-7kY">
+                                <rect key="frame" x="16" y="561" width="568" height="31"/>
+                                <state key="normal" title="Load more">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="loadMoreButtonClick:" destination="7Vf-Ok-Lv5" eventType="touchUpInside" id="8Is-UJ-LOx"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="sU9-eH-diV" firstAttribute="top" secondItem="4eq-GX-Gy5" secondAttribute="bottom" constant="53" id="9gQ-AG-stS"/>
+                            <constraint firstItem="Fai-DI-fkg" firstAttribute="top" secondItem="4eq-GX-Gy5" secondAttribute="top" constant="-44" id="CXi-Ix-VeC"/>
+                            <constraint firstItem="rqq-QV-7kY" firstAttribute="trailing" secondItem="mg0-cj-FCA" secondAttribute="trailingMargin" id="CcW-RY-2nl"/>
+                            <constraint firstItem="Fai-DI-fkg" firstAttribute="leading" secondItem="mg0-cj-FCA" secondAttribute="leadingMargin" constant="-16" id="UMZ-To-edu"/>
+                            <constraint firstItem="rqq-QV-7kY" firstAttribute="leading" secondItem="mg0-cj-FCA" secondAttribute="leadingMargin" id="WIt-X6-Fuz"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Fai-DI-fkg" secondAttribute="trailing" constant="-16" id="WOG-fd-rLM"/>
+                            <constraint firstItem="Fai-DI-fkg" firstAttribute="top" secondItem="5Zb-hB-GlR" secondAttribute="bottom" id="etx-Bl-Jzu"/>
+                            <constraint firstItem="4eq-GX-Gy5" firstAttribute="leading" secondItem="mg0-cj-FCA" secondAttribute="leadingMargin" constant="-16" id="sMZ-Fv-yTh"/>
+                            <constraint firstItem="sU9-eH-diV" firstAttribute="top" secondItem="rqq-QV-7kY" secondAttribute="bottom" constant="8" id="uXi-HR-W07"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4eq-GX-Gy5" secondAttribute="trailing" constant="-16" id="ymk-OX-2H2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="_loadMoreButton" destination="rqq-QV-7kY" id="taA-L6-Qk0"/>
+                        <outlet property="_tableView" destination="4eq-GX-Gy5" id="2H4-Rb-j1h"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EZi-VD-foq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1429" y="-1367"/>
+        </scene>
+    </scenes>
+</document>

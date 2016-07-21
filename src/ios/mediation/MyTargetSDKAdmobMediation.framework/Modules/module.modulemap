@@ -1,0 +1,6 @@
+framework module MyTargetSDKAdmobMediation {
+  umbrella header "MyTargetSDKAdmobMediation.h"
+
+  export *
+  module * { export * }
+}
