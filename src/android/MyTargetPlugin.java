@@ -114,84 +114,92 @@ public class MyTargetPlugin extends CordovaPlugin {
             Log.e(TAG, "Banner view already created");
             fail("Banner view already created");
         } else {
-            bannerView = new MyTargetView(getActivity());
-            bannerView.init(slot);
-
-            // Добавляем экземпляр в лэйаут главной активности
-            final ViewGroup.LayoutParams adViewLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            //adViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            layout.post(new Runnable() {
+            getActivity().runOnUiThread(new Runnable() {
                     public void run() {
-                        Log.i(TAG, "Make new banner with slot id: "+slot);
-                        layout.addView(bannerView, adViewLayoutParams);
+                        bannerView = new MyTargetView(getActivity());
+                        bannerView.init(slot);
+
+                        // Добавляем экземпляр в лэйаут главной активности
+                        final ViewGroup.LayoutParams adViewLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        //adViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        layout.post(new Runnable() {
+                                public void run() {
+                                    Log.i(TAG, "Make new banner with slot id: "+slot);
+                                    layout.addView(bannerView, adViewLayoutParams);
+                                }
+                            });
+
+                        // Устанавливаем слушатель событий
+                        bannerView.setListener(new MyTargetView.MyTargetViewListener() {
+                                @Override
+                                public void onLoad(MyTargetView myTargetView) {
+                                    // Данные успешно загружены, запускаем показ объявлений
+                                    Log.i(TAG, "Banner has been loaded");
+                                    myTargetView.start();
+                                }
+
+                                @Override
+                                public void onNoAd(String reason, MyTargetView myTargetView) {
+                                    Log.e(TAG, "No ads for banner");
+                                }
+
+                                @Override
+                                public void onClick(MyTargetView myTargetView) {
+                                    Log.i(TAG, "Banner clicked");
+                                }
+                            });
+
+                        // Запускаем загрузку данных
+                        bannerView.load();
+                        success();
                     }
                 });
-
-            // Устанавливаем слушатель событий
-            bannerView.setListener(new MyTargetView.MyTargetViewListener() {
-                    @Override
-                    public void onLoad(MyTargetView myTargetView) {
-                        // Данные успешно загружены, запускаем показ объявлений
-                        Log.i(TAG, "Banner has been loaded");
-                        myTargetView.start();
-                    }
-
-                    @Override
-                    public void onNoAd(String reason, MyTargetView myTargetView) {
-                        Log.e(TAG, "No ads for banner");
-                    }
-
-                    @Override
-                    public void onClick(MyTargetView myTargetView) {
-                        Log.i(TAG, "Banner clicked");
-                    }
-                });
-
-            // Запускаем загрузку данных
-            bannerView.load();
-            success();
         }
         return true;
     }
 
     private boolean makeFullScreen(final int slot) {
-        InterstitialAd ad = new InterstitialAd(slot, getActivity());
-        ad.setListener(new InterstitialAd.InterstitialAdListener() {
-                @Override
-                public void onLoad(InterstitialAd ad) {
-                    Log.i(TAG, "Fullscreen ad was loaded. Slot "+slot);
-                    ad.show();
-                }
+        getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    InterstitialAd ad = new InterstitialAd(slot, getActivity());
+                    ad.setListener(new InterstitialAd.InterstitialAdListener() {
+                            @Override
+                            public void onLoad(InterstitialAd ad) {
+                                Log.i(TAG, "Fullscreen ad was loaded. Slot "+slot);
+                                ad.show();
+                            }
 
-                @Override
-                public void onNoAd(String reason, InterstitialAd ad) {
-                    Log.e(TAG, "No available fullscreen ad for slot "+slot);
-                }
+                            @Override
+                            public void onNoAd(String reason, InterstitialAd ad) {
+                                Log.e(TAG, "No available fullscreen ad for slot "+slot);
+                            }
 
-                @Override
-                public void onClick(InterstitialAd ad) {
-                    Log.i(TAG, "Click on fullscreen ad. Slot "+slot);
-                }
+                            @Override
+                            public void onClick(InterstitialAd ad) {
+                                Log.i(TAG, "Click on fullscreen ad. Slot "+slot);
+                            }
 
-                @Override
-                public void onDisplay(InterstitialAd ad) {
-                    Log.i(TAG, "Display fullscreen ad. Slot "+slot);
-                }
+                            @Override
+                            public void onDisplay(InterstitialAd ad) {
+                                Log.i(TAG, "Display fullscreen ad. Slot "+slot);
+                            }
 
-                @Override
-                public void onDismiss(InterstitialAd ad) {
-                    Log.i(TAG, "Fullscreen ad dismiss. Slot "+slot);
-                }
+                            @Override
+                            public void onDismiss(InterstitialAd ad) {
+                                Log.i(TAG, "Fullscreen ad dismiss. Slot "+slot);
+                            }
 
-                @Override
-                public void onVideoCompleted(InterstitialAd ad) {
-                    Log.i(TAG, "Fullscreen video completed. Slot "+slot);
+                            @Override
+                            public void onVideoCompleted(InterstitialAd ad) {
+                                Log.i(TAG, "Fullscreen video completed. Slot "+slot);
+                            }
+                        });
+
+                    // Запускаем загрузку данных
+                    ad.load();
+                    success();
                 }
             });
-
-        // Запускаем загрузку данных
-        ad.load();
-        success();
         return true;
     }
 };
