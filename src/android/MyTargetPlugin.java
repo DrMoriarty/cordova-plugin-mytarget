@@ -26,7 +26,7 @@ public class MyTargetPlugin extends CordovaPlugin {
     private static final String TAG = "MyTarget";
     private static final String ACTION_INIT = "initMyTarget";
     private static final String ACTION_MAKE_BANNER = "makeBanner";
-    private static final String ACTION_MAKE_FULLSCREEN = "makeFullScreen";
+    private static final String ACTION_MAKE_FULLSCREEN = "makeFullscreen";
     private ViewGroup layout = null;
     private CallbackContext _callbackContext;
     private MyTargetView bannerView = null;
@@ -154,7 +154,44 @@ public class MyTargetPlugin extends CordovaPlugin {
         return true;
     }
 
-    private boolean makeFullScreen(int slot) {
+    private boolean makeFullScreen(final int slot) {
+        InterstitialAd ad = new InterstitialAd(slot, getActivity());
+        ad.setListener(new InterstitialAd.InterstitialAdListener() {
+                @Override
+                public void onLoad(InterstitialAd ad) {
+                    Log.i(TAG, "Fullscreen ad was loaded. Slot "+slot);
+                    ad.show();
+                }
+
+                @Override
+                public void onNoAd(String reason, InterstitialAd ad) {
+                    Log.e(TAG, "No available fullscreen ad for slot "+slot);
+                }
+
+                @Override
+                public void onClick(InterstitialAd ad) {
+                    Log.i(TAG, "Click on fullscreen ad. Slot "+slot);
+                }
+
+                @Override
+                public void onDisplay(InterstitialAd ad) {
+                    Log.i(TAG, "Display fullscreen ad. Slot "+slot);
+                }
+
+                @Override
+                public void onDismiss(InterstitialAd ad) {
+                    Log.i(TAG, "Fullscreen ad dismiss. Slot "+slot);
+                }
+
+                @Override
+                public void onVideoCompleted(InterstitialAd ad) {
+                    Log.i(TAG, "Fullscreen video completed. Slot "+slot);
+                }
+            });
+
+        // Запускаем загрузку данных
+        ad.load();
+        success();
         return true;
     }
 };
