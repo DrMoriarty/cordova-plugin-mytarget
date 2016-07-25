@@ -3,7 +3,13 @@ package ru.orangeapps.mytarget;
 import android.content.Context;
 import android.util.Log;
 import android.app.Activity;
-import android.widget.RelativeLayout;
+//import android.widget.AbsoluteLayout;
+//import android.support.v4.widget.DrawerLayout;
+import android.widget.FrameLayout;
+//import android.widget.GridLayout;
+//import android.widget.LinearLayout;
+//import android.widget.RelativeLayout;
+//import android.support.v4.widget.SlidingPaneLayout;
 import android.view.ViewGroup;
 
 import org.json.JSONException;
@@ -26,9 +32,10 @@ public class MyTargetPlugin extends CordovaPlugin {
     private static final String TAG = "MyTarget";
     private static final String ACTION_INIT = "initMyTarget";
     private static final String ACTION_MAKE_BANNER = "makeBanner";
+    private static final String ACTION_REMOVE_BANNER = "removeBanner";
     private static final String ACTION_MAKE_FULLSCREEN = "makeFullscreen";
-    private ViewGroup layout = null;
-    private CallbackContext _callbackContext;
+    private FrameLayout layout = null;
+    //private CallbackContext _callbackContext;
     private MyTargetView bannerView = null;
 
     private Context getApplicationContext() {
@@ -39,47 +46,60 @@ public class MyTargetPlugin extends CordovaPlugin {
         return (Activity)this.webView.getContext();
     }
 
-    private void success() {
-        if(_callbackContext != null) {
-            _callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
-            _callbackContext.success();
+    private void success(CallbackContext callbackContext) {
+        if(callbackContext != null) {
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
+            callbackContext.success();
         }
     }
-    private void fail(String err) {
+    private void fail(String err, CallbackContext callbackContext) {
         if(err == null) err = "Error";
-        if(_callbackContext != null) {
-            _callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, err));
-            _callbackContext.error(err);
+        if(callbackContext != null) {
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, err));
+            callbackContext.error(err);
         }
     }
 
+    /*
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         CordovaActivity activity = (CordovaActivity)this.cordova.getActivity();
-        layout = (ViewGroup)activity.getWindow().getDecorView().getRootView();
-        Log.i(TAG, "1) Find root object with type "+layout.getClass().toString());
+        layout = (RelativeLayout)activity.getWindow().getDecorView().getRootView();
+        Log.i(TAG, "1) Find root object with type "+layout.getClass().toString()+" child of "+layout.getClass().getSuperClass().toString());
     }
+    */
 
     @Override
     protected void pluginInitialize() {
         CordovaActivity activity = (CordovaActivity)this.cordova.getActivity();
-        layout = (ViewGroup)activity.getWindow().getDecorView().getRootView();
-        Log.i(TAG, "2) Find root object with type "+layout.getClass().toString());
+        layout = (FrameLayout)activity.getWindow().getDecorView().getRootView();
+        /*
+        if(layout instanceof AbsoluteLayout) Log.i(TAG, "AbsoluteLayout!!!");
+        if(layout instanceof DrawerLayout) Log.i(TAG, "DrawerLayout!!!");
+        if(layout instanceof FrameLayout) Log.i(TAG, "FrameLayout!!!");
+        if(layout instanceof GridLayout) Log.i(TAG, "GridLayout!!!");
+        if(layout instanceof LinearLayout) Log.i(TAG, "LinearLayout!!!");
+        if(layout instanceof RelativeLayout) Log.i(TAG, "RelativeLayout!!!");
+        if(layout instanceof SlidingPaneLayout) Log.i(TAG, "SlidingPaneLayout!!!");
+        */
+        Log.i(TAG, "Find root object with type "+layout.getClass().toString());
     }
 
     @Override
     public boolean execute(String action, CordovaArgs args, final CallbackContext callbackContext) throws JSONException {
-        this._callbackContext = callbackContext;
+        //this._callbackContext = callbackContext;
         if(ACTION_INIT.equals(action)) {
             Log.i(TAG, "MyTarget initialize");
             return true;
         } else if(ACTION_MAKE_BANNER.equals(action)) {
-            return makeBanner(args.getInt(0));
+            return makeBanner(args.getInt(0), callbackContext);
         } else if(ACTION_MAKE_FULLSCREEN.equals(action)) {
-            return makeFullScreen(args.getInt(0));
+            return makeFullScreen(args.getInt(0), callbackContext);
+        } else if(ACTION_REMOVE_BANNER.equals(action)) {
+            return removeBanner(callbackContext);
         }
         Log.e(TAG, "Unknown action: "+action);
-        fail("Unimplemented method: "+action);
+        fail("Unimplemented method: "+action, callbackContext);
         return true;
     }
 
@@ -109,10 +129,10 @@ public class MyTargetPlugin extends CordovaPlugin {
         }
     }
 
-    private boolean makeBanner(final int slot) {
+    private boolean makeBanner(final int slot, final CallbackContext callbackContext) {
         if(bannerView != null) {
             Log.e(TAG, "Banner view already created");
-            fail("Banner view already created");
+            fail("Banner view already created", callbackContext);
         } else {
             getActivity().runOnUiThread(new Runnable() {
                     public void run() {
@@ -120,8 +140,7 @@ public class MyTargetPlugin extends CordovaPlugin {
                         bannerView.init(slot);
 
                         // Добавляем экземпляр в лэйаут главной активности
-                        final ViewGroup.LayoutParams adViewLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        //adViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        final FrameLayout.LayoutParams adViewLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0x50);
                         layout.post(new Runnable() {
                                 public void run() {
                                     Log.i(TAG, "Make new banner with slot id: "+slot);
@@ -136,11 +155,13 @@ public class MyTargetPlugin extends CordovaPlugin {
                                     // Данные успешно загружены, запускаем показ объявлений
                                     Log.i(TAG, "Banner has been loaded");
                                     myTargetView.start();
+                                    success(callbackContext);
                                 }
 
                                 @Override
                                 public void onNoAd(String reason, MyTargetView myTargetView) {
                                     Log.e(TAG, "No ads for banner");
+                                    fail("No ads for banner "+slot, callbackContext);
                                 }
 
                                 @Override
@@ -151,14 +172,29 @@ public class MyTargetPlugin extends CordovaPlugin {
 
                         // Запускаем загрузку данных
                         bannerView.load();
-                        success();
                     }
                 });
         }
         return true;
     }
 
-    private boolean makeFullScreen(final int slot) {
+    private boolean removeBanner(final CallbackContext callbackContext) {
+        if(bannerView != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        layout.removeView(bannerView);
+                        bannerView.destroy();
+                        bannerView = null;
+                        success(callbackContext);
+                    }
+                });
+        } else {
+            fail("No banner view", callbackContext);
+        }
+        return true;
+    }
+
+    private boolean makeFullScreen(final int slot, final CallbackContext callbackContext) {
         getActivity().runOnUiThread(new Runnable() {
                 public void run() {
                     InterstitialAd ad = new InterstitialAd(slot, getActivity());
@@ -167,11 +203,13 @@ public class MyTargetPlugin extends CordovaPlugin {
                             public void onLoad(InterstitialAd ad) {
                                 Log.i(TAG, "Fullscreen ad was loaded. Slot "+slot);
                                 ad.show();
+                                success(callbackContext);
                             }
 
                             @Override
                             public void onNoAd(String reason, InterstitialAd ad) {
                                 Log.e(TAG, "No available fullscreen ad for slot "+slot);
+                                fail("No ads for slot "+slot, callbackContext);
                             }
 
                             @Override
@@ -197,7 +235,6 @@ public class MyTargetPlugin extends CordovaPlugin {
 
                     // Запускаем загрузку данных
                     ad.load();
-                    success();
                 }
             });
         return true;
