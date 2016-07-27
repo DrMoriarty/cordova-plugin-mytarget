@@ -1,7 +1,7 @@
 cordova-plugin-mytarget
 =================
 
-MyTarget integration for cordova
+[MyTarget](https://target.my.com/partners/help/sdk/) integration for cordova
 
 Installation
 
