@@ -23,7 +23,20 @@
   <platform name="ios">
     <framework src="src/ios/MyTargetSDK.framework" custom="true"/>
     <framework src="src/ios/mediation/MyTargetSDKAdmobMediation.framework" custom="true"/>
-    <framework src="src/ios/mediation/MyTargetSDKMopubMediation.framework" custom="true"/>
+    <!--framework src="src/ios/mediation/MyTargetSDKMopubMediation.framework" custom="true"/-->
+    <framework src="StoreKit.framework" custom="false"/>
+    <framework src="AdSupport.framework" custom="false"/>
+    <framework src="AVFoundation.framework" custom="false"/>
+    <framework src="CoreLocation.framework" custom="false"/>
+    <framework src="CoreTelephony.framework" custom="false"/>
+    <framework src="SystemConfiguration.framework" custom="false"/>
+    <source-file src="src/ios/MyTargetPlugin.h"/>
+    <source-file src="src/ios/MyTargetPlugin.m"/>
+    <config-file target="config.xml" parent="/*">
+      <feature name="MyTargetPlugin">
+        <param name="ios-package" value="MyTargetPlugin"/>
+      </feature>
+    </config-file>
   </platform>
 
   <!-- android -->

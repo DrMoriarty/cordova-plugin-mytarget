@@ -4,7 +4,7 @@
 #import <Cordova/CDV.h>
 #import <MyTargetSDK/MyTargetSDK.h>
 
-@interface MyTargetPlugin : CDVPlugin <MTRGAdViewDelegate>
+@interface MyTargetPlugin : CDVPlugin <MTRGAdViewDelegate, MTRGInterstitialAdDelegate>
 {
 }
 
