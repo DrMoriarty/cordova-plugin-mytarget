@@ -31,12 +31,15 @@ import com.my.target.ads.InterstitialAd;
 public class MyTargetPlugin extends CordovaPlugin {
     private static final String TAG = "MyTarget";
     private static final String ACTION_INIT = "initMyTarget";
-    private static final String ACTION_MAKE_BANNER = "makeBanner";
+    private static final String ACTION_LOAD_BANNER = "loadBanner";
+    private static final String ACTION_SHOW_BANNER = "showBanner";
     private static final String ACTION_REMOVE_BANNER = "removeBanner";
-    private static final String ACTION_MAKE_FULLSCREEN = "makeFullscreen";
+    private static final String ACTION_LOAD_FULLSCREEN = "loadFullscreen";
+    private static final String ACTION_SHOW_FULLSCREEN = "showFullscreen";
     private FrameLayout layout = null;
     //private CallbackContext _callbackContext;
     private MyTargetView bannerView = null;
+    private InterstitialAd fullscreenAd = null;
 
     private Context getApplicationContext() {
         return this.getActivity().getApplicationContext();
@@ -46,17 +49,18 @@ public class MyTargetPlugin extends CordovaPlugin {
         return (Activity)this.webView.getContext();
     }
 
-    private void success(CallbackContext callbackContext) {
+    private void success(String result, CallbackContext callbackContext) {
+        if(result == null) result = "Ok";
         if(callbackContext != null) {
-            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
-            callbackContext.success();
+            callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, result));
+            //callbackContext.success();
         }
     }
     private void fail(String err, CallbackContext callbackContext) {
         if(err == null) err = "Error";
         if(callbackContext != null) {
             callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, err));
-            callbackContext.error(err);
+            //callbackContext.error(err);
         }
     }
 
@@ -91,12 +95,16 @@ public class MyTargetPlugin extends CordovaPlugin {
         if(ACTION_INIT.equals(action)) {
             Log.i(TAG, "MyTarget initialize");
             return true;
-        } else if(ACTION_MAKE_BANNER.equals(action)) {
-            return makeBanner(args.getInt(0), callbackContext);
-        } else if(ACTION_MAKE_FULLSCREEN.equals(action)) {
-            return makeFullScreen(args.getInt(0), callbackContext);
+        } else if(ACTION_LOAD_BANNER.equals(action)) {
+            return loadBanner(args.getInt(0), callbackContext);
+        } else if(ACTION_SHOW_BANNER.equals(action)) {
+            return showBanner(callbackContext);
         } else if(ACTION_REMOVE_BANNER.equals(action)) {
             return removeBanner(callbackContext);
+        } else if(ACTION_LOAD_FULLSCREEN.equals(action)) {
+            return loadFullScreen(args.getInt(0), callbackContext);
+        } else if(ACTION_SHOW_FULLSCREEN.equals(action)) {
+            return showFullScreen(callbackContext);
         }
         Log.e(TAG, "Unknown action: "+action);
         fail("Unimplemented method: "+action, callbackContext);
@@ -129,7 +137,7 @@ public class MyTargetPlugin extends CordovaPlugin {
         }
     }
 
-    private boolean makeBanner(final int slot, final CallbackContext callbackContext) {
+    private boolean loadBanner(final int slot, final CallbackContext callbackContext) {
         if(bannerView != null) {
             Log.e(TAG, "Banner view already created");
             fail("Banner view already created", callbackContext);
@@ -139,23 +147,13 @@ public class MyTargetPlugin extends CordovaPlugin {
                         bannerView = new MyTargetView(getActivity());
                         bannerView.init(slot);
 
-                        // Добавляем экземпляр в лэйаут главной активности
-                        final FrameLayout.LayoutParams adViewLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0x50);
-                        layout.post(new Runnable() {
-                                public void run() {
-                                    Log.i(TAG, "Make new banner with slot id: "+slot);
-                                    layout.addView(bannerView, adViewLayoutParams);
-                                }
-                            });
-
                         // Устанавливаем слушатель событий
                         bannerView.setListener(new MyTargetView.MyTargetViewListener() {
                                 @Override
                                 public void onLoad(MyTargetView myTargetView) {
                                     // Данные успешно загружены, запускаем показ объявлений
                                     Log.i(TAG, "Banner has been loaded");
-                                    myTargetView.start();
-                                    success(callbackContext);
+                                    success("Banner loaded", callbackContext);
                                 }
 
                                 @Override
@@ -178,6 +176,42 @@ public class MyTargetPlugin extends CordovaPlugin {
         return true;
     }
 
+    private boolean showBanner(final CallbackContext callbackContext) {
+        if(bannerView == null) {
+            Log.e(TAG, "Have no banner to show");
+            fail("You should load banner before call showBanner", callbackContext);
+        } else {
+            // Устанавливаем слушатель событий
+            bannerView.setListener(new MyTargetView.MyTargetViewListener() {
+                    @Override
+                    public void onLoad(MyTargetView myTargetView) {
+                        Log.e(TAG, "Banner has been loaded twice");
+                    }
+                    @Override
+                    public void onNoAd(String reason, MyTargetView myTargetView) {
+                        Log.e(TAG, "No ads for loaded banner!");
+                        fail("No ads for loaded banner ", callbackContext);
+                    }
+                    @Override
+                    public void onClick(MyTargetView myTargetView) {
+                        Log.i(TAG, "Banner clicked");
+                        success("Banner clicked", callbackContext);
+                    }
+                });
+            // Добавляем экземпляр в лэйаут главной активности
+            final FrameLayout.LayoutParams adViewLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0x50);
+            layout.post(new Runnable() {
+                    public void run() {
+                        Log.i(TAG, "Show new banner");
+                        layout.addView(bannerView, adViewLayoutParams);
+                        bannerView.start();
+                    }
+                });
+
+        }
+        return true;
+    }
+
     private boolean removeBanner(final CallbackContext callbackContext) {
         if(bannerView != null) {
             getActivity().runOnUiThread(new Runnable() {
@@ -185,7 +219,7 @@ public class MyTargetPlugin extends CordovaPlugin {
                         layout.removeView(bannerView);
                         bannerView.destroy();
                         bannerView = null;
-                        success(callbackContext);
+                        success(null, callbackContext);
                     }
                 });
         } else {
@@ -194,16 +228,15 @@ public class MyTargetPlugin extends CordovaPlugin {
         return true;
     }
 
-    private boolean makeFullScreen(final int slot, final CallbackContext callbackContext) {
+    private boolean loadFullScreen(final int slot, final CallbackContext callbackContext) {
         getActivity().runOnUiThread(new Runnable() {
                 public void run() {
-                    InterstitialAd ad = new InterstitialAd(slot, getActivity());
-                    ad.setListener(new InterstitialAd.InterstitialAdListener() {
+                    fullscreenAd = new InterstitialAd(slot, getActivity());
+                    fullscreenAd.setListener(new InterstitialAd.InterstitialAdListener() {
                             @Override
                             public void onLoad(InterstitialAd ad) {
                                 Log.i(TAG, "Fullscreen ad was loaded. Slot "+slot);
-                                ad.show();
-                                success(callbackContext);
+                                success("Fullscreen loaded", callbackContext);
                             }
 
                             @Override
@@ -234,9 +267,52 @@ public class MyTargetPlugin extends CordovaPlugin {
                         });
 
                     // Запускаем загрузку данных
-                    ad.load();
+                    fullscreenAd.load();
                 }
             });
+        return true;
+    }
+
+    private boolean showFullScreen(final CallbackContext callbackContext) {
+        if(fullscreenAd == null) {
+            fail("You should call loadFullScreen before showFullScreen", callbackContext);
+            Log.e(TAG, "Have no fullscreenAd to show");
+        } else {
+            fullscreenAd.setListener(new InterstitialAd.InterstitialAdListener() {
+                    @Override
+                    public void onLoad(InterstitialAd ad) {
+                        Log.e(TAG, "Fullscreen ad was loaded twice.");
+                    }
+
+                    @Override
+                    public void onNoAd(String reason, InterstitialAd ad) {
+                        Log.e(TAG, "No available ad for loaded fullscreen Ad");
+                        fail("No ads for loaded fullscreen Ad ", callbackContext);
+                    }
+
+                    @Override
+                    public void onClick(InterstitialAd ad) {
+                        Log.i(TAG, "Click on fullscreen ad");
+                    }
+
+                    @Override
+                    public void onDisplay(InterstitialAd ad) {
+                        Log.i(TAG, "Display fullscreen ad");
+                    }
+
+                    @Override
+                    public void onDismiss(InterstitialAd ad) {
+                        Log.i(TAG, "Fullscreen ad dismiss");
+                        success("Fullscreen ad closed", callbackContext);
+                    }
+
+                    @Override
+                    public void onVideoCompleted(InterstitialAd ad) {
+                        Log.i(TAG, "Fullscreen video completed");
+                    }
+                });
+            fullscreenAd.show();
+        }
         return true;
     }
 };

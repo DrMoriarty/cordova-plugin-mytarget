@@ -11,5 +11,7 @@
 - (void)makeBanner:(CDVInvokedUrlCommand*)command;
 - (void)removeBanner:(CDVInvokedUrlCommand*)command;
 - (void)makeFullscreen:(CDVInvokedUrlCommand*)command;
+- (void)preloadFullscreen:(CDVInvokedUrlCommand*)command;
+- (void)showPreloadedFullscreen:(CDVInvokedUrlCommand*)command;
 
 @end
