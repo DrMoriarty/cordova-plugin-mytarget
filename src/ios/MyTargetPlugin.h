@@ -8,10 +8,10 @@
 {
 }
 
-- (void)makeBanner:(CDVInvokedUrlCommand*)command;
+- (void)loadBanner:(CDVInvokedUrlCommand*)command;
+- (void)showBanner:(CDVInvokedUrlCommand*)command;
 - (void)removeBanner:(CDVInvokedUrlCommand*)command;
-- (void)makeFullscreen:(CDVInvokedUrlCommand*)command;
-- (void)preloadFullscreen:(CDVInvokedUrlCommand*)command;
-- (void)showPreloadedFullscreen:(CDVInvokedUrlCommand*)command;
+- (void)loadFullscreen:(CDVInvokedUrlCommand*)command;
+- (void)showFullscreen:(CDVInvokedUrlCommand*)command;
 
 @end
