@@ -3,13 +3,7 @@ package ru.orangeapps.mytarget;
 import android.content.Context;
 import android.util.Log;
 import android.app.Activity;
-//import android.widget.AbsoluteLayout;
-//import android.support.v4.widget.DrawerLayout;
 import android.widget.FrameLayout;
-//import android.widget.GridLayout;
-//import android.widget.LinearLayout;
-//import android.widget.RelativeLayout;
-//import android.support.v4.widget.SlidingPaneLayout;
 import android.view.ViewGroup;
 
 import org.json.JSONException;
@@ -25,7 +19,6 @@ import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaWebView;
 
 import com.my.target.ads.MyTargetView;
-import com.my.target.ads.MyTargetVideoView;
 import com.my.target.ads.InterstitialAd;
 
 public class MyTargetPlugin extends CordovaPlugin {
