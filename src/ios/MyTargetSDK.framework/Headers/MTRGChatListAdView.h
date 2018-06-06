@@ -1,45 +1,46 @@
 //
 //  MTRGChatListAdView.h
-//  myTargetSDK 4.4.9
+//  myTargetSDK 4.7.9
 //
 //  Created by Anton Bulankin on 05.12.14.
 //  Copyright (c) 2014 Mail.ru Group. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import <MyTargetSDK/MTRGBaseNativeAdView.h>
-#import <MyTargetSDK/MTRGNativeTeaserBanner.h>
-#import <MyTargetSDK/MTRGStarsRatingView.h>
+#import <MyTargetSDK/MTRGNativePromoBanner.h>
+#import <MyTargetSDK/MTRGStarsRatingLabel.h>
 
-@interface MTRGChatListAdView : MTRGBaseNativeAdView
+NS_ASSUME_NONNULL_BEGIN
 
-@property (strong, nonatomic) MTRGNativeTeaserBanner * teaserBanner;
+@interface MTRGChatListAdView : UIView
 
-//Заголовок
-@property (nonatomic, strong, readonly) UILabel * titleLabel;
-//Описание
-@property (nonatomic, strong, readonly) UILabel * descriptionLabel;
-//Иконка
-@property (nonatomic, strong, readonly) UIImageView * iconImageView;
-//Домен
-@property (nonatomic, strong, readonly) UILabel * domainLabel;
-//Категория и подкатегория
-@property (nonatomic, strong, readonly) UILabel * categoryLabel;
-//Дисклеймер
-@property (nonatomic, strong, readonly) UILabel * disclaimerLabel;
-//Звезды рейтинга (только для приложений)
-@property (strong, nonatomic, readonly) MTRGStarsRatingView * ratingStarsView;
-//Количество голосов
-@property (strong, nonatomic, readonly) UILabel * votesLabel;
+@property(nonatomic, nullable) MTRGNativePromoBanner *banner;
+@property(nonatomic) UIColor *backgroundColor;
 
-//Отступы
-@property (nonatomic) UIEdgeInsets titleMargins;
-@property (nonatomic) UIEdgeInsets domainMargins;
-@property (nonatomic) UIEdgeInsets categoryMargins;
-@property (nonatomic) UIEdgeInsets descriptionMargins;
-@property (nonatomic) UIEdgeInsets disclaimerMargins;
-@property (nonatomic) UIEdgeInsets iconMargins;
-@property (nonatomic) UIEdgeInsets ratingStarsMargins;
-@property (nonatomic) UIEdgeInsets votesMargins;
+@property(nonatomic, readonly) UILabel *ageRestrictionsLabel;
+@property(nonatomic, readonly) UILabel *adLabel;
+@property(nonatomic, readonly) UILabel *titleLabel;
+@property(nonatomic, readonly) UILabel *descriptionLabel;
+@property(nonatomic, readonly) UIImageView *iconImageView;
+
+@property(nonatomic, readonly, nullable) UILabel *domainLabel;
+@property(nonatomic, readonly, nullable) UILabel *disclaimerLabel;
+@property(nonatomic, readonly, nullable) MTRGStarsRatingLabel *ratingStarsLabel;
+@property(nonatomic, readonly, nullable) UILabel *votesLabel;
+
+@property(nonatomic) UIEdgeInsets contentMargins;
+@property(nonatomic) UIEdgeInsets adLabelMargins;
+@property(nonatomic) UIEdgeInsets ageRestrictionsMargins;
+@property(nonatomic) UIEdgeInsets titleMargins;
+@property(nonatomic) UIEdgeInsets domainMargins;
+@property(nonatomic) UIEdgeInsets descriptionMargins;
+@property(nonatomic) UIEdgeInsets disclaimerMargins;
+@property(nonatomic) UIEdgeInsets iconMargins;
+@property(nonatomic) UIEdgeInsets ratingStarsMargins;
+@property(nonatomic) UIEdgeInsets votesMargins;
+
+- (void)loadImages;
 
 @end
+
+NS_ASSUME_NONNULL_END

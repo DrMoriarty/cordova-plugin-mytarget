@@ -1,23 +1,27 @@
 //
 //  MTRGTracer.h
-//  myTargetSDK 4.4.9
+//  myTargetSDK 4.7.9
 //
-//  Created by Igor Glotov on 23.07.14.
-//  Copyright (c) 2014 Mail.ru. All rights reserved.
+// Created by Timur on 5/23/16.
+// Copyright (c) 2016 Mail.ru. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MTRGTracer : NSObject
 
-//Property is deprecated, use [MTRGManager setLoggingEnabled:YES];
-@property (nonatomic) BOOL enableLogging __attribute__((deprecated));
++ (BOOL)enabled;
 
-+(MTRGTracer *) sharedTracer;
++ (void)setEnabled:(BOOL)enabled;
 
 @end
 
 extern void mtrg_tracer_i(NSString *, ...);
+
 extern void mtrg_tracer_d(NSString *, ...);
+
 extern void mtrg_tracer_e(NSString *, ...);
 
+NS_ASSUME_NONNULL_END

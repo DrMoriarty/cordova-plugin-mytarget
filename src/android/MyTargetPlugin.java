@@ -20,6 +20,7 @@ import org.apache.cordova.CordovaWebView;
 
 import com.my.target.ads.MyTargetView;
 import com.my.target.ads.InterstitialAd;
+import com.my.target.common.MyTargetPrivacy;
 
 public class MyTargetPlugin extends CordovaPlugin {
     private static final String TAG = "MyTarget";
@@ -29,6 +30,8 @@ public class MyTargetPlugin extends CordovaPlugin {
     private static final String ACTION_REMOVE_BANNER = "removeBanner";
     private static final String ACTION_LOAD_FULLSCREEN = "loadFullscreen";
     private static final String ACTION_SHOW_FULLSCREEN = "showFullscreen";
+    private static final String ACTION_SET_CONSENT = "setUserConsent";
+    private static final String ACTION_SET_AGE_RESTRICTED = "setUserAgeRestricted";
     private FrameLayout layout = null;
     //private CallbackContext _callbackContext;
     private MyTargetView bannerView = null;
@@ -98,6 +101,10 @@ public class MyTargetPlugin extends CordovaPlugin {
             return loadFullScreen(args.getInt(0), callbackContext);
         } else if(ACTION_SHOW_FULLSCREEN.equals(action)) {
             return showFullScreen(callbackContext);
+        } else if(ACTION_SET_CONSENT.equals(action)) {
+            return setConsent(args.getBoolean(0), callbackContext);
+        } else if(ACTION_SET_AGE_RESTRICTED.equals(action)) {
+            return setAgeRestricted(args.getBoolean(0), callbackContext);
         }
         Log.e(TAG, "Unknown action: "+action);
         fail("Unimplemented method: "+action, callbackContext);
@@ -306,6 +313,18 @@ public class MyTargetPlugin extends CordovaPlugin {
                 });
             fullscreenAd.show();
         }
+        return true;
+    }
+
+    private boolean setConsent(final boolean consent, final CallbackContext callbackContext) {
+        MyTargetPrivacy.setUserConsent(consent);
+        success("Ok", callbackContext);
+        return true;
+    }
+
+    private boolean setAgeRestricted(final boolean ageRestricted, final CallbackContext callbackContext) {
+        MyTargetPrivacy.setUserAgeRestricted(ageRestricted);
+        success("Ok", callbackContext);
         return true;
     }
 };

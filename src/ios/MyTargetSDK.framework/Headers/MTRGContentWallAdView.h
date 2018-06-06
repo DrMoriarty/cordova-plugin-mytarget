@@ -1,24 +1,34 @@
 //
 //  MTRGContentWallAdView.h
-//  myTargetSDK 4.4.9
+//  myTargetSDK 4.7.9
 //
 //  Created by Anton Bulankin on 05.12.14.
 //  Copyright (c) 2014 Mail.ru Group. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import <MyTargetSDK/MTRGBaseNativeAdView.h>
 #import <MyTargetSDK/MTRGNativePromoBanner.h>
-#import <MyTargetSDK/MTRGNativeImageBanner.h>
+#import <MyTargetSDK/MTRGMediaAdView.h>
 
-@interface MTRGContentWallAdView : MTRGBaseNativeAdView
+NS_ASSUME_NONNULL_BEGIN
 
-@property (strong, nonatomic) MTRGNativeImageBanner * imageBanner;
+@interface MTRGContentWallAdView : UIView
 
-//Изображение
-@property (nonatomic, strong, readonly) UIImageView * imageView;
+@property(nonatomic, nullable) MTRGNativePromoBanner *banner;
+@property(nonatomic, nullable) UIColor *backgroundColor;
 
-//Отступы
-@property (nonatomic) UIEdgeInsets imageMargins;
+@property(nonatomic, readonly) UILabel *ageRestrictionsLabel;
+@property(nonatomic, readonly) UILabel *adLabel;
+
+@property(nonatomic) UIEdgeInsets contentMargins;
+@property(nonatomic) UIEdgeInsets adLabelMargins;
+@property(nonatomic) UIEdgeInsets ageRestrictionsMargins;
+
+@property(nonatomic, readonly) MTRGMediaAdView *mediaAdView;
+@property(nonatomic) UIEdgeInsets imageMargins;
+
+- (void)loadImages;
 
 @end
+
+NS_ASSUME_NONNULL_END

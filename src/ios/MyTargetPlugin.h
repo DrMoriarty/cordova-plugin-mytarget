@@ -13,5 +13,7 @@
 - (void)removeBanner:(CDVInvokedUrlCommand*)command;
 - (void)loadFullscreen:(CDVInvokedUrlCommand*)command;
 - (void)showFullscreen:(CDVInvokedUrlCommand*)command;
+- (void)setUserConsent:(CDVInvokedUrlCommand*)command;
+- (void)setUserAgeRestricted:(CDVInvokedUrlCommand*)command;
 
 @end

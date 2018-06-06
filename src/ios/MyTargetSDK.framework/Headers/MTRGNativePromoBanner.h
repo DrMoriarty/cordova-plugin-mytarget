@@ -1,6 +1,6 @@
 //
 //  MTRGNativePromoBanner.h
-//  myTargetSDK 4.4.9
+//  myTargetSDK 4.7.9
 //
 //  Created by Anton Bulankin on 17.11.14.
 //  Copyright (c) 2014 Mail.ru Group. All rights reserved.
@@ -8,31 +8,30 @@
 
 #import <Foundation/Foundation.h>
 #import <MyTargetSDK/MTRGImageData.h>
-#import <MyTargetSDK/MTRGTypes.h>
+#import <MyTargetSDK/MTRGNavigationType.h>
+#import <MyTargetSDK/MTRGNativePromoCard.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface MTRGNativePromoBanner : NSObject
 
-//Текст реклама
-@property (nonatomic, strong) NSString * advertisingLabel;
-//Возрастные ограничения
-@property (nonatomic, strong) NSString * ageRestrictions;
-//Тип навигации
-@property (nonatomic) MTRGNavigationType navigationType;
-//
-@property (nonatomic, strong) NSString * title;
-@property (nonatomic, strong) NSString * descriptionText;
-@property (nonatomic, strong) NSString * disclaimer;
-@property (nonatomic, strong) NSNumber * rating;
-@property (nonatomic, strong) NSNumber * votes;
-@property (nonatomic, strong) NSString * category;
-@property (nonatomic, strong) NSString * subcategory;
-@property (nonatomic, strong) NSString * domain;
-@property (nonatomic, strong) NSString * ctaText;
-
-//Иконка
-@property (nonatomic,strong) MTRGImageData * icon;
-//Рисунок
-@property (nonatomic,strong) MTRGImageData * image;
+@property(nonatomic, copy, nullable) NSString *advertisingLabel;
+@property(nonatomic, copy, nullable) NSString *ageRestrictions;
+@property(nonatomic, copy, nullable) NSString *title;
+@property(nonatomic, copy, nullable) NSString *descriptionText;
+@property(nonatomic, copy, nullable) NSString *disclaimer;
+@property(nonatomic, copy, nullable) NSString *category;
+@property(nonatomic, copy, nullable) NSString *subcategory;
+@property(nonatomic, copy, nullable) NSString *domain;
+@property(nonatomic, copy, nullable) NSString *ctaText;
+@property(nonatomic, nullable) NSNumber *rating;
+@property(nonatomic) NSUInteger votes;
+@property(nonatomic) MTRGNavigationType navigationType;
+@property(nonatomic, nullable) MTRGImageData *icon;
+@property(nonatomic, nullable) MTRGImageData *image;
+@property(nonatomic, nullable) NSArray<MTRGNativePromoCard *> *cards;
+@property(nonatomic) BOOL hasVideo;
 
 @end
+
+NS_ASSUME_NONNULL_END

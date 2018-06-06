@@ -108,6 +108,20 @@
     }
 }
 
+- (void)setUserConsent:(CDVInvokedUrlCommand*)command
+{
+    BOOL consent = [[command.arguments objectAtIndex:0] boolValue];
+    [MTRGPrivacy setUserConsent:consent];
+    [self success:nil command:command];
+}
+
+- (void)setUserAgeRestricted:(CDVInvokedUrlCommand*)command
+{
+    BOOL ageRestricted = [[command.arguments objectAtIndex:0] boolValue];
+    [MTRGPrivacy setUserAgeRestricted:ageRestricted];
+    [self success:nil command:command];
+}
+
 #pragma mark - MTRGAdViewDelegate
 
 -(void)onLoadWithAdView:(MTRGAdView *)adView

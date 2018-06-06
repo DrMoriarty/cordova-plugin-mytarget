@@ -1,6 +1,6 @@
 //
 //  MTRGNativeAppwallAd.h
-//  myTargetSDK 4.4.9
+//  myTargetSDK 4.7.9
 //
 //  Created by Anton Bulankin on 13.01.15.
 //  Copyright (c) 2015 Mail.ru Group. All rights reserved.
@@ -12,62 +12,57 @@
 #import <MyTargetSDK/MTRGNativeAppwallBanner.h>
 #import <MyTargetSDK/MTRGAppwallAdView.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 @class MTRGNativeAppwallAd;
 
 @protocol MTRGNativeAppwallAdDelegate <NSObject>
 
--(void)onLoadWithAppwallBanners:(NSArray *)appwallBanners appwallAd:(MTRGNativeAppwallAd *)appwallAd;
--(void)onNoAdWithReason:(NSString *)reason appwallAd:(MTRGNativeAppwallAd *)appwallAd;
+- (void)onLoadWithAppwallBanners:(NSArray *)appwallBanners appwallAd:(MTRGNativeAppwallAd *)appwallAd;
+
+- (void)onNoAdWithReason:(NSString *)reason appwallAd:(MTRGNativeAppwallAd *)appwallAd;
 
 @optional
 
--(void)onAdClickWithNativeAppwallAd:(MTRGNativeAppwallAd *)appwallAd appwallBanner:(MTRGNativeAppwallBanner *)appwallBanner;
+- (void)onAdClickWithNativeAppwallAd:(MTRGNativeAppwallAd *)appwallAd appwallBanner:(MTRGNativeAppwallBanner *)appwallBanner;
 
 @end
-
-
 
 
 @interface MTRGNativeAppwallAd : NSObject
 
+@property(nonatomic, weak, nullable) id <MTRGNativeAppwallAdDelegate> delegate;
+@property(nonatomic, copy, nullable) NSString *appWallTitle;
+@property(nonatomic, copy, nullable) NSString *closeButtonTitle;
+@property(nonatomic) NSUInteger cachePeriodInSec;
+@property(nonatomic, readonly, nullable) MTRGCustomParams *customParams;
+@property(nonatomic, readonly, nullable) NSArray *banners;
+@property(nonatomic) BOOL autoLoadImages;
+@property(nonatomic) BOOL trackEnvironmentEnabled;
+@property(nonatomic) BOOL trackLocationEnabled;
 
-@property (weak, nonatomic) id<MTRGNativeAppwallAdDelegate> delegate;
++ (void)setDebugMode:(BOOL)enabled;
 
-//Загрузить банер (будут вызваны методы делегата)
--(void) load;
++ (BOOL)isDebugMode;
 
-//Параметры
-//Название витрины
-@property (copy, nonatomic) NSString * appWallTitle;
-//Название кнопки закрытие
-@property (copy, nonatomic) NSString * closeButtonTitle;
-//Период кэширования баннеров
-@property (nonatomic) NSUInteger cachePeriodInSec;
++ (void)loadImage:(MTRGImageData *)imageData toView:(UIImageView *)imageView;
 
+- (nullable instancetype)initWithSlotId:(NSUInteger)slotId;
 
-//Дополнительный параметры настройки запроса
-@property (nonatomic, strong, readonly) MTRGCustomParams * customParams;
+- (void)load;
 
--(instancetype) initWithSlotId:(NSString*)slotId;
+- (void)showWithController:(UIViewController *)controller onComplete:(nullable void (^)(void))onComplete onError:(nullable void (^)(NSError *error))onError;
 
-//Отображение:
--(void) showWithController:(UIViewController*) controller onComplete:(void(^)()) onComplete
-                        onError:(void(^)(NSError* error))onError;
+- (void)registerAppWallAdView:(MTRGAppwallAdView *)appWallAdView withController:(UIViewController *)controller;
 
+- (void)close;
 
-//Зарегистрировать для отображения вьюшку
--(void) registerAppWallAdView:(MTRGAppwallAdView *)appWallAdView withController:(UIViewController*)controller;
+- (BOOL)hasNotifications;
 
-//Сообщить о том, что бынер был показан
--(void) handleShow:(MTRGNativeAppwallBanner *)appWallBanner;
-//Сообщить о том, что по банеру был произведен клик
--(void) handleClick:(MTRGNativeAppwallBanner *)appWallBanner withController:(UIViewController*)controller;
-//Сообщить о наличии нотификаций
--(BOOL) hasNotifications;
+- (void)handleShow:(MTRGNativeAppwallBanner *)appWallBanner;
 
-@property (nonatomic, strong, readonly) NSArray * banners;
-
--(void) close;
+- (void)handleClick:(MTRGNativeAppwallBanner *)appWallBanner withController:(UIViewController *)controller;
 
 @end
+
+NS_ASSUME_NONNULL_END

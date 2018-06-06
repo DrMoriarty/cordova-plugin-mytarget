@@ -3,7 +3,7 @@
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="cordova-plugin-mytarget"
-    version="1.0.0">
+    version="1.1.0">
 
   <name>MyTarget</name>
   <description>MyTarget integration for cordova</description>
@@ -42,7 +42,7 @@
   <!-- android -->
   <platform name="android">
     <source-file src="src/android/MyTargetPlugin.java" target-dir="src/ru/orangeapps/mytarget/" />
-    <framework src="com.my.target:mytarget-sdk:4.5.+"/>
+    <framework src="com.my.target:mytarget-sdk:5.1.+"/>
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.INTERNET"/>
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
