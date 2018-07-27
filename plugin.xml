@@ -15,6 +15,10 @@
   <author>DrMoriarty</author>
   <keywords>cordova,phonegap,mytarget</keywords>
 
+  <hook type="after_plugin_install" src="hooks/after_plugin_add.js" />                                                                                                                            
+  <hook type="after_platform_add" src="hooks/after_plugin_add.js" />
+  <hook type="before_plugin_uninstall" src="hooks/before_plugin_rm.js" />
+
   <js-module src="www/MyTarget.js" name="MyTarget">
     <clobbers target="MyTarget"/>
   </js-module>
