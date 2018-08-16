@@ -1,6 +1,6 @@
 //
 //  MTRGNativeAd.h
-//  myTargetSDK 4.7.9
+//  myTargetSDK 4.8.0
 //
 //  Created by Anton Bulankin on 10.11.14.
 //  Copyright (c) 2014 Mail.ru Group. All rights reserved.
@@ -58,6 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithSlotId:(NSUInteger)slotId;
 
 - (void)load;
+
+- (void)loadFromBid:(NSString *)bidId;
 
 - (void)registerView:(UIView *)containerView withController:(UIViewController *)controller;
 

@@ -1,6 +1,6 @@
 //
 //  MTRGContentStreamAdView.h
-//  myTargetSDK 4.7.9
+//  myTargetSDK 4.8.0
 //
 //  Created by Anton Bulankin on 05.12.14.
 //  Copyright (c) 2014 Mail.ru Group. All rights reserved.
@@ -46,6 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic) UIEdgeInsets domainMargins;
 @property(nonatomic) UIEdgeInsets domainBottomMargins;
 @property(nonatomic) UIEdgeInsets categoryMargins;
+@property(nonatomic) UIEdgeInsets categoryBottomMargins;
 @property(nonatomic) UIEdgeInsets descriptionMargins;
 @property(nonatomic) UIEdgeInsets disclaimerMargins;
 @property(nonatomic) UIEdgeInsets imageMargins;

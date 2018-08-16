@@ -1,6 +1,6 @@
 //
 //  MTRGAdView.h
-//  myTargetSDK 4.7.9
+//  myTargetSDK 4.8.0
 //
 //  Created by Anton Bulankin on 05.03.15.
 //  Copyright (c) 2015 Mail.ru Group. All rights reserved.
@@ -57,6 +57,8 @@ typedef enum : NSUInteger
 - (nullable instancetype)initWithSlotId:(NSUInteger)slotId withRefreshAd:(BOOL)refreshAd adSize:(MTRGAdSize)adSize;
 
 - (void)load;
+
+- (void)loadFromBid:(NSString *)bidId;
 
 - (void)start;
 
