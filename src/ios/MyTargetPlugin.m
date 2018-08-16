@@ -46,8 +46,8 @@
         [self fail:@"Banner view already created" command:command];
     } else {
         loadBannerCommand = command;
-        NSString *slotId = [command.arguments objectAtIndex:0];
-        bannerView = [[MTRGAdView alloc]initWithSlotId:slotId];
+        NSNumber *slotId = [command.arguments objectAtIndex:0];
+        bannerView = [[MTRGAdView alloc]initWithSlotId:slotId.integerValue];
         bannerView.delegate = self;
         bannerView.viewController = [self findViewController];
         [bannerView load];
@@ -88,10 +88,10 @@
 - (void)loadFullscreen:(CDVInvokedUrlCommand*)command
 {
     loadFullscreenCommand = command;
-    NSString *slotId = [command.arguments objectAtIndex:0];
+    NSNumber *slotId = [command.arguments objectAtIndex:0];
 
     // Создаем экземпляр MTRGInterstitialAd
-    fullscreenAd = [[MTRGInterstitialAd alloc]initWithSlotId:slotId];
+    fullscreenAd = [[MTRGInterstitialAd alloc]initWithSlotId:slotId.integerValue];
     // Устанавливаем делегат
     fullscreenAd.delegate = self;
     // Запускаем загрузку данных
