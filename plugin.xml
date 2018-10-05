@@ -46,7 +46,7 @@
   <!-- android -->
   <platform name="android">
     <source-file src="src/android/MyTargetPlugin.java" target-dir="src/ru/orangeapps/mytarget/" />
-    <framework src="com.my.target:mytarget-sdk:5.1.+"/>
+    <framework src="com.my.target:mytarget-sdk:5.2.+"/>
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.INTERNET"/>
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
