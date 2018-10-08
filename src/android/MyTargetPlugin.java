@@ -111,6 +111,7 @@ public class MyTargetPlugin extends CordovaPlugin {
         return true;
     }
 
+    /*
     @Override
     public void onPause(boolean multitasking) {
         Log.i(TAG, "Paused");
@@ -127,6 +128,7 @@ public class MyTargetPlugin extends CordovaPlugin {
     public void onStop() {
         Log.i(TAG, "Stop");
     }
+    */
 
     @Override
     public void onDestroy() {
@@ -204,7 +206,7 @@ public class MyTargetPlugin extends CordovaPlugin {
                     public void run() {
                         Log.i(TAG, "Show new banner");
                         layout.addView(bannerView, adViewLayoutParams);
-                        bannerView.start();
+                        //bannerView.start();
                     }
                 });
 
