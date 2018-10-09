@@ -22,6 +22,10 @@
   <js-module src="www/MyTarget.js" name="MyTarget">
     <clobbers target="MyTarget"/>
   </js-module>
+  <info>
+    You can use sample AdMob App ID (ca-app-pub-3940256099942544~3347511713) if you don't have another one.
+  </info>
+  <preference name="ADMOB_APP_ID" />
 
   <!-- ios -->
   <platform name="ios">
@@ -53,6 +57,7 @@
     </config-file>
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <activity android:name="com.my.target.ads.MyTargetActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+      <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="$ADMOB_APP_ID"/>
     </config-file>
     <config-file target="config.xml" parent="/*">
       <feature name="MyTargetPlugin">
