@@ -281,6 +281,7 @@ public class MyTargetPlugin extends CordovaPlugin {
             Log.e(TAG, "Have no fullscreenAd to show");
         } else {
             fullscreenAd.setListener(new InterstitialAd.InterstitialAdListener() {
+                    public boolean completed;
                     @Override
                     public void onLoad(InterstitialAd ad) {
                         Log.e(TAG, "Fullscreen ad was loaded twice.");
@@ -300,17 +301,22 @@ public class MyTargetPlugin extends CordovaPlugin {
                     @Override
                     public void onDisplay(InterstitialAd ad) {
                         Log.i(TAG, "Display fullscreen ad");
+                        completed = false;
                     }
 
                     @Override
                     public void onDismiss(InterstitialAd ad) {
                         Log.i(TAG, "Fullscreen ad dismiss");
-                        success("Fullscreen ad closed", callbackContext);
+                        if(completed)
+                            success("Fullscreen ad closed", callbackContext);
+                        else
+                            fail("Fullscreen ad not completed", callbackContext);
                     }
 
                     @Override
                     public void onVideoCompleted(InterstitialAd ad) {
                         Log.i(TAG, "Fullscreen video completed");
+                        completed = true;
                     }
                 });
             fullscreenAd.show();
